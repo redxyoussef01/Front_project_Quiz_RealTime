@@ -1,23 +1,19 @@
-import { useState } from 'react'
-import { Navbar } from './components/Navbar'
 import './App.css'
-import { Route, Router, Routes } from 'react-router-dom';
-import{ Home,Student} from "./components/pages";
-import Course from './components/cour';
-
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/dashboard';
+import Quiz from './pages/listeQuiz'
 
 function App() {
-   
-
-  return (
- <div className='App'><Navbar/>
+    return (
+  <BrowserRouter>
  <Routes>
- <Route path="/" element={<Home/>}/>
-  <Route path="/Student" element={<Course/>}/>
+ <Route path="/" element={< Dashboard />} />
+  <Route path="/quiz" element={< Quiz />} />
 
  </Routes>
+ </BrowserRouter>
  
- </div>
   )
 }
 
