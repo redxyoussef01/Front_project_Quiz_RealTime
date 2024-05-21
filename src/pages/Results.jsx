@@ -1,12 +1,10 @@
 import React, {useState} from 'react'
 import { Button, Flex, Layout } from 'antd';
 import {MenuUnfoldOutlined, MenuFoldOutlined} from '@ant-design/icons'
-import Sidebar from '../components/Sidebar';
-import MainContent from '../components/MainContent';
-
-import Quiz  from '../components/CrudQuiz'
 import CustomHeader from '../components/Header';
+import Note from '../components/Notes'
 import '../App.css'
+import Sidebar from '../components/Sidebar';
 
 
 const {Sider, Header, Content} = Layout;
@@ -14,6 +12,7 @@ const App = () => {
   const [collapsed, setCollapsed] = useState(false)
   return (
     
+   
     <Layout>
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed} className="sider">
 
@@ -28,9 +27,8 @@ const App = () => {
         </Header>
         <Content className="content">
           <Flex gap="large">
-            <MainContent />
+            <Note />
           </Flex>
-          
         </Content>
       </Layout>
     </Layout>

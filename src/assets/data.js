@@ -1,30 +1,34 @@
 export const data=[
     {
-        question:"whho are you",
+        qst:"whho are you",
         option1:"wissal",
         option2:"yassine",
         option3:"ahmade",
+        option4:"sss",
         ans:1,
     },
     {
-        question:"what are you doing ",
+        qst:"what are you doing ",
         option1:"nothing",
         option2:"bouth",
         option3:"playing",
+        option4:"sss",
         ans:2,   
     },
     {
-        question:"what are you doing ",
+        qst:"what are you doing ",
         option1:"nothing",
         option2:"bouth",
         option3:"playing",
+        option4:"sss",
         ans:3,   
     },
     {
-        question:"diid you asnwer ",
+        qst:"diid you asnwer ",
         option1:"nothing",
         option2:"bouth",
         option3:"yupp",
+        
         ans:3,   
     },
 ];

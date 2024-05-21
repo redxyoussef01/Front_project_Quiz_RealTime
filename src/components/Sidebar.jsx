@@ -45,9 +45,7 @@ const Sidebar = () => {
         </Menu.Item>
         
         <Menu.Item key="/quiz" icon={<MdOutlineQuiz />} title="quiz"><Link to="/quiz">Quiz</Link></Menu.Item>
-        <Menu.Item key="/Question" icon={<MdOutlineQuestionAnswer />} title="Question"><Link to="/Question">Question</Link></Menu.Item>
         <Menu.Item key="/results" icon={<FcStatistics />} title="results"><Link to="/Results">Results</Link></Menu.Item>
-        <Menu.Item key="/logout" icon={<LogoutOutlined />} title="Logout"><Link to="/logout">Logout</Link></Menu.Item>
       </Menu>
     </>
   );

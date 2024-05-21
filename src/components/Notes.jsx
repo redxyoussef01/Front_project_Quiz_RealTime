@@ -1,31 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
-import CreateQuiz from './Dashboard'
-import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
 function Home() {
+    const socket = io('http://localhost:4000');
     const [show, setShow] = useState(false);
     const [personnels, setPersonnels] = useState([]);
-    const [personnes, setPersonnes] = useState([]);
-    const [formData, setFormData] = useState({
-        personne_id: '',
-        title: '',
-        makerId: '',
-        description: '',
-        temps: '',
-        note:'',
-        questions: [
-      { questionText: '', options: ['', '', '', ''], correctAnswer: '' },
-    ]
-    });
+   
+   
 
-   useEffect(() => {
-    fetchQuizzes();
-}, []);
 
-  const fetchQuizzes = async () => {
+
+useEffect(() => {
+        // Fetch initial notes
+        fetchNotes();
+
+        // Listen for 'noteCreated' event from the server
+        socket.on('noteCreated', (newNote) => {
+            setPersonnels((prevNotes) => [...prevNotes, newNote]); // Update state with the newly created note
+        });
+        
+        // Clean up function to close the socket connection
+        return () => {
+            socket.disconnect();
+        };
+    }, [socket]);
+
+  const fetchNotes = async () => {
     try {
-        const response = await axios.get('http://localhost:4000/listQuiz');
+        const response = await axios.get('http://localhost:4000/listNote');
         if (response.data && Array.isArray(response.data)) {
             setPersonnels(response.data);
         } else {
@@ -38,40 +40,23 @@ function Home() {
     
     
 
-    const handleAddPersonnel = () => {
-        setShow(true);
-    };
 
-    const handleClose = () => {
-        setShow(false);
-        setFormData({
-            personne_id: '',
-        title: '',
-        makerId: '',
-        description: '',
-        temps: '',
-        note:'',
-        questions: [
-      { questionText: '', options: ['', '', '', ''], correctAnswer: '' },
-    ]
-        });
-    };
 
   
 
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this personnel?');
+        const confirmDelete = window.confirm('Are you sure you want to delete this note?');
         if (!confirmDelete) return;
     
         try {
-            await axios.delete(`http://localhost:4000/deleteQuiz/${id}/`);
+            await axios.delete(`http://localhost:4000/deleteNote/${id}/`);
             const updatedPersonnels = personnels.filter(personnel => personnel.id !== id);
             setPersonnels(updatedPersonnels); // Update personnels state after successful deletion
-            alert('Quiz deleted successfully');
+            alert('note deleted successfully');
         } catch (error) {
-            console.error('Error deleting Quiz:', error);
+            console.error('Error deleting note:', error);
             // Display error message to the user
-            alert('Error deleting personnel');
+            alert('Error deleting note');
         }
     };
     
@@ -87,11 +72,9 @@ function Home() {
                             </form>
                         </div>
                     </div>
-                    <div className="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{ color: "green" }}><h2><b>Quiz List</b></h2></div>
+                    <div className="col-sm-3 offset-sm-2 mt-5 mb-4 text-gred" style={{ color: "green" }}><h2><b>note List</b></h2></div>
                     <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-                        <Button variant="primary" onClick={handleAddPersonnel}>
-                            <Link to="/Mquiz">Add New Quiz</Link>
-                        </Button>
+                    
                     </div>
                 </div>    
                 <div className="row">
@@ -100,10 +83,8 @@ function Home() {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>titre</th>
-                                    <th>makerId</th>
-                                    <th>description</th>
-                                    <th>temps</th>
+                                    <th>quiz</th>
+                                    <th>user lastname</th>
                                     <th>note</th>
                                 </tr>
                             </thead>
@@ -111,13 +92,10 @@ function Home() {
                                         {personnels.map((quiz, index) => (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
-                                                <td>{quiz.title}</td>
-                                                <td>{quiz.makerId}</td>
-                                                <td>{quiz.description}</td>
-                                                <td>{quiz.temps}</td>
+                                                <td>{quiz.quiz.title}</td>
+                                                <td>{quiz.user.lastName}</td>
                                                 <td>{quiz.note}</td>
                                                 <td>
-                                                
                                                     <a href="#" className="delete" title="Delete" data-toggle="tooltip" onClick={() => handleDelete(quiz.id)}>
                                                         <i className="material-icons">&#xE872;</i>
                                                     </a>
@@ -131,6 +109,7 @@ function Home() {
                     </div>
                 </div>
 
+            
 
             </div>
         </div>
